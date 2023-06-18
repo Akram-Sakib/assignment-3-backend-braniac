@@ -13,6 +13,10 @@ const moduleRoutes = [
     path: '/cows',
     route: CowRoutes,
   },
+  {
+    path: '/orders',
+    route: CowRoutes,
+  }
 ];
 
 moduleRoutes.forEach(route => router.use(route.path, route.route));
