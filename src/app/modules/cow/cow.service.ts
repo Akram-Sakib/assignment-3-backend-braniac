@@ -7,8 +7,17 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { cowSearchableFields } from './cow.constants';
 import { ICow, ICowFilters } from './cow.interface';
 import { Cow } from './cow.model';
+import { User } from '../user/user.model';
 
 const addCow = async (cow: ICow): Promise<ICow | null> => {
+
+  const user = await User.findOne({
+    _id: cow.seller,
+    role: 'seller',
+  });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Seller not found !');
+  }
   const addedCow = await Cow.create(cow);
 
   if (!addedCow) {

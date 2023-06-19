@@ -20,21 +20,22 @@ const cowOrder: RequestHandler = catchAsync(
   }
 );
 
-// const getSingleCow = catchAsync(async (req: Request, res: Response) => {
-//   const id = req.params.id;
+const getAllOrders: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await OrderService.getAllOrders();
 
-//   const result = await CowService.getSingleCow(id);
+    sendResponse<IOrder[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'All Orders fetched successfully!',
+      data: result,
+    });
 
-//   sendResponse<IOrder>(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Cow retrieved successfully !',
-//     data: result,
-//   });
-// });
+  }
+);
 
 
 export const OrderController = {
   cowOrder,
-//   getSingleCow,
+  getAllOrders,
 };

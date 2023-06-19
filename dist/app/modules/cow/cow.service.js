@@ -29,7 +29,15 @@ const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const cow_constants_1 = require("./cow.constants");
 const cow_model_1 = require("./cow.model");
+const user_model_1 = require("../user/user.model");
 const addCow = (cow) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findOne({
+        _id: cow.seller,
+        role: 'seller',
+    });
+    if (!user) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'Seller not found !');
+    }
     const addedCow = yield cow_model_1.Cow.create(cow);
     if (!addedCow) {
         throw new ApiError_1.default(400, 'Failed to add cow');

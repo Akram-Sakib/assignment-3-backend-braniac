@@ -11,4 +11,6 @@ router.post(
   OrderController.cowOrder
 );
 
-export const CowRoutes = router;
+router.get("/", OrderController.getAllOrders)
+
+export const OrderRoutes = router;

@@ -27,7 +27,7 @@ const addCowZodSchema = z.object({
     category: z.enum([...CowCategory] as [string, ...string[]], {
       required_error: 'Category is required',
     }),
-    seller: z.enum([...CowCategory] as [string, ...string[]], {
+    seller: z.string({
       required_error: 'Seller Referance is required',
     }),
   }),
@@ -59,7 +59,7 @@ const updateCowZodSchema = z.object({
     category: z.enum([...CowCategory] as [string, ...string[]], {
       required_error: 'Category is required',
     }).optional(),
-    seller: z.enum([...CowCategory] as [string, ...string[]], {
+    seller: z.string({
       required_error: 'Seller Referance is required',
     }).optional(),
   }),
