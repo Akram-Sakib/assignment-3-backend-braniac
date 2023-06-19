@@ -1,10 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
-import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
-import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { userFilterableFields } from './user.constants';
 import { IUser } from './user.interface';
 import { UserService } from './user.service';
 
@@ -27,13 +24,11 @@ const createUser: RequestHandler = catchAsync(
 );
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, userFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await UserService.getAllUsers(filters, paginationOptions);
+  const result = await UserService.getAllUsers();
 
   const message =
-    result.data.length > 0
+    result.length > 0
       ? 'User retrieved successfully !'
       : 'No user founded';
 
@@ -41,8 +36,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: message,
-    meta: result.meta,
-    data: result.data,
+    data: result,
   });
 });
 

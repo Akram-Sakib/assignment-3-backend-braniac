@@ -23,15 +23,15 @@ exports.CowBreed = [
 exports.CowLabel = ['for sale', 'sold out'];
 exports.CowCategory = ['Dairy', 'Beef', 'Dual Purpose'];
 exports.cowSearchableFields = [
+    "searchTerm",
     'name',
-    'age',
-    'price',
+    // 'age',
+    // 'price',
     'location',
     'breed',
-    'weight',
+    // 'weight',
     'label',
     'category',
-    'seller',
 ];
 exports.cowFilterableFields = [
     'searchTerm',
@@ -43,5 +43,6 @@ exports.cowFilterableFields = [
     'weight',
     'label',
     'category',
-    'seller',
+    "minPrice",
+    "maxPrice",
 ];

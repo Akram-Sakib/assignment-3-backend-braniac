@@ -31,15 +31,15 @@ export const CowLabel: ICowLabel[] = ['for sale', 'sold out'];
 export const CowCategory: ICowCategory[] = ['Dairy', 'Beef', 'Dual Purpose'];
 
 export const cowSearchableFields = [
+  "searchTerm",
   'name',
-  'age',
-  'price',
+  // 'age',
+  // 'price',
   'location',
   'breed',
-  'weight',
+  // 'weight',
   'label',
   'category',
-  'seller',
 ];
 
 export const cowFilterableFields = [
@@ -52,5 +52,6 @@ export const cowFilterableFields = [
   'weight',
   'label',
   'category',
-  'seller',
+  "minPrice",
+  "maxPrice",
 ];

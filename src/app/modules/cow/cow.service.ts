@@ -4,13 +4,12 @@ import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
+import { User } from '../user/user.model';
 import { cowSearchableFields } from './cow.constants';
 import { ICow, ICowFilters } from './cow.interface';
 import { Cow } from './cow.model';
-import { User } from '../user/user.model';
 
 const addCow = async (cow: ICow): Promise<ICow | null> => {
-
   const user = await User.findOne({
     _id: cow.seller,
     role: 'seller',
@@ -41,7 +40,7 @@ const getAllCows = async (
       $or: cowSearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
-          $options: 'i',
+          $options: typeof searchTerm === 'string' ? 'i' : undefined,
         },
       })),
     });
@@ -49,11 +48,19 @@ const getAllCows = async (
 
   if (Object.keys(filtersData).length) {
     andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => ({
-        [field]: value,
-      })),
+      $and: Object.entries(filtersData).map(([field, value]) => {
+        if (field === 'minPrice') {
+          return { price: { $gte: value } };
+        } else if (field === 'maxPrice') {
+          return { price: { $lte: value } };
+        }
+        return {
+          [field]: value,
+        };
+      }),
     });
   }
+
 
   const sortConditions: { [key: string]: SortOrder } = {};
 

@@ -27,9 +27,9 @@ exports.CowService = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
+const user_model_1 = require("../user/user.model");
 const cow_constants_1 = require("./cow.constants");
 const cow_model_1 = require("./cow.model");
-const user_model_1 = require("../user/user.model");
 const addCow = (cow) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.findOne({
         _id: cow.seller,
@@ -53,16 +53,24 @@ const getAllCows = (filters, paginationOptions) => __awaiter(void 0, void 0, voi
             $or: cow_constants_1.cowSearchableFields.map(field => ({
                 [field]: {
                     $regex: searchTerm,
-                    $options: 'i',
+                    $options: typeof searchTerm === 'string' ? 'i' : undefined,
                 },
             })),
         });
     }
     if (Object.keys(filtersData).length) {
         andConditions.push({
-            $and: Object.entries(filtersData).map(([field, value]) => ({
-                [field]: value,
-            })),
+            $and: Object.entries(filtersData).map(([field, value]) => {
+                if (field === 'minPrice') {
+                    return { price: { $gte: value } };
+                }
+                else if (field === 'maxPrice') {
+                    return { price: { $lte: value } };
+                }
+                return {
+                    [field]: value,
+                };
+            }),
         });
     }
     const sortConditions = {};
